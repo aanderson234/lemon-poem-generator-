@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemon Poem Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f7d774, #f6b73c);
+            font-family: 'Vollkorn', serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #4a4a4a;
+            text-shadow: 2px 2px #f1c232;
+        }
+        #poem-paragraph {
+            background: #fff;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.2rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: #555;
+            max-width: 600px;
+        }
+        footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Lemon Poem Generator 🍋</h1>
+    <p id="poem-paragraph">Fetching your poem...</p>
+    <button id="refresh-button" style="margin-top: 20px; padding: 10px 20px; font-size: 1rem; background: #f6b73c; border: none; border-radius: 5px; color: white; cursor: pointer;">
+        Generate Another Poem 🍋
+    </button>
+    <footer>Powered by OpenAI's GPT API</footer>
+    <script>
+        // Fetch the poem from the server's /get-poem endpoint
+        fetch('/get-poem')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('poem-paragraph').innerText = data.poem;
+            })
+            .catch(error => {
+                console.error('Error fetching poem:', error);
+                document.getElementById('poem-paragraph').innerText = "Failed to fetch a poem. Try refreshing!";
+            });
+
+        // Refresh button functionality
+        document.getElementById('refresh-button').addEventListener('click', () => {
+            document.getElementById('poem-paragraph').innerText = "Fetching your poem...";
+            fetch('/get-poem')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('poem-paragraph').innerText = data.poem;
+                })
+                .catch(error => {
+                    console.error('Error fetching poem:', error);
+                    document.getElementById('poem-paragraph').innerText = "Failed to fetch a poem. Try again!";
+                });
+        });
+    </script>
+</body>
+</html>
